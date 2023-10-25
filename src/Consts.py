@@ -1,5 +1,7 @@
 # Registry functions consts
 RESERVED = 0
+REG_KEY_NAME_INDEX = 0
+REG_KEY_DATA_INDEX = 1
 
 # Output consts
 INFO_PREFIX = "[+]"

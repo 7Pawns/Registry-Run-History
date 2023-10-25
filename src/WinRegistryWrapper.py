@@ -20,10 +20,16 @@ class WinRegistryWrapper:
         if (self.key != None):
             winreg.CloseKey(self.key)
 
-    def getHistory(self) -> tuple[int, int, int]:
-        keyInfo = winreg.QueryInfoKey(self.key)
+    def getHistory(self) -> list:
+        subKeys, valueCount, lastModified = winreg.QueryInfoKey(self.key)
+        values = []
+
+        for i in range(valueCount):
+            curValue = winreg.EnumValue(self.key, i)
+            if (curValue[REG_KEY_NAME_INDEX] != 'MRUList'):
+                values.append(curValue[REG_KEY_DATA_INDEX])
         
-        return keyInfo
+        return values
     
     def editHistory(self, index: int, value: str) -> None:
         return
