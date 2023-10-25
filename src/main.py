@@ -1,7 +1,7 @@
 import WinRegistryWrapper
 
 def main():
-    reg = WinRegistryWrapper.WinRegistryWrapper(WinRegistryWrapper.winreg.HKEY_CURRENT_USER, 'Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU')
+    reg = WinRegistryWrapper.WinRegistryWrapper(WinRegistryWrapper.winreg.HKEY_CURRENT_USER, WinRegistryWrapper.RUN_SUB_KEY)
     print(reg.getHistory())
 
     return
