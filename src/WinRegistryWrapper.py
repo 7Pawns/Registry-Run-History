@@ -49,14 +49,19 @@ class WinRegistryWrapper:
         if (len(mruList) == MAX_MRU_LIST_LEN):
             name = mruList[-1]
         
+        elif (len(mruList) == 0):
+            name = 'a'
+        
         else:
             name = chr(ord(max(mruList)) + 1)
 
         updatedMruList = name + mruList
-        winreg.SetValueEx(self.key, MRU_LIST, RESERVED, type, updatedMruList)
 
-        winreg.SetValueEx(self.key, name, RESERVED, type, value)
-        return
+        try:
+            winreg.SetValueEx(self.key, MRU_LIST, RESERVED, type, updatedMruList)
+            winreg.SetValueEx(self.key, name, RESERVED, type, value)
+        except OSError as e:
+            print(ERROR_PREFIX + e)
     
     def removeValue(self, value: str) -> None:
         subKeys, valueCount, lastModified = winreg.QueryInfoKey(self.key)
@@ -68,7 +73,8 @@ class WinRegistryWrapper:
                 break
         
         mruList = mruList.replace(value, '')
-        winreg.SetValueEx(self.key, MRU_LIST, RESERVED, winreg.REG_SZ, mruList)
-
-        winreg.DeleteValue(self.key, value)
-        return
+        try:
+            winreg.SetValueEx(self.key, MRU_LIST, RESERVED, winreg.REG_SZ, mruList)
+            winreg.DeleteValue(self.key, value)
+        except OSError as e:
+            print(ERROR_PREFIX + e)
